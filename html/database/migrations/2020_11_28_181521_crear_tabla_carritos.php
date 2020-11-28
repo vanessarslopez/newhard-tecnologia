@@ -16,7 +16,7 @@ class CrearTablaCarritos extends Migration
         Schema::create('carritos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('usuario_id')->constrained('users');
-            $table->float('precio');
+            $table->decimal('precio', 8, 2);
             $table->char('estado', 1);
             $table->timestamps();
         });

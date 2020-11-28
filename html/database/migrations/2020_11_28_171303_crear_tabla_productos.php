@@ -20,7 +20,7 @@ class CrearTablaProductos extends Migration
             $table->string('nombre');
             $table->text('descripcion');
             $table->text('imagen');
-            $table->float('precio', 10, 2);
+            $table->decimal('precio', 8, 2);
             $table->integer('disponiblididad');
             $table->timestamps();
         });

@@ -18,7 +18,7 @@ class CrearTablaCarritosDetalle extends Migration
             $table->foreignId('carrito_id')->constrained('carritos');
             $table->foreignId('producto_id')->constrained('productos');
             $table->integer('cantidad');
-            $table->float('precio');
+            $table->decimal('precio', 8, 2);
             $table->timestamps();
         });
     }
