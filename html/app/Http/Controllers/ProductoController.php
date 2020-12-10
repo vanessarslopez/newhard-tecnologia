@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\producto;
+use App\Models\rubro;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
@@ -14,17 +15,20 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        return view('productos.index');
+        //$datos['productos']=producto::all();
+        $datos['productos']=producto::paginate(4);
+        return view('productos.index', $datos);
     }
 
-    /**
+     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        return view('productos.create');
+        $rubros = rubro::all();
+        return view('productos.create', compact('rubros'));
     }
 
     /**
@@ -35,7 +39,26 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $campos=[
+            'rubro_id'=> 'required',
+            'SKU'=> 'required',
+            'nombre'=> 'required|string|max:250',
+            'descripcion'=> 'required',
+            /*'imagen'=> 'required|max:10000|mimes:jpeg,png,jpg',*/
+            'precio'=> 'required',
+            'disponibilidad'=> 'required'
+        ];
+        $mensaje=["required"=>'El :attribute es requerido'];
+        $this->validate($request,$campos,$mensaje);
+
+        //$datosProductos=request()->all();
+        $datosProductos=request()->except('_token');
+        if($request->hasFile('imagen')){
+            $datosProductos['imagen']=$request->file('imagen')->store('uploads','public');
+        }
+        producto::insert($datosProductos); // producto->hace referencia al modelo.
+        return response()->json($datosProductos);
+        //return view('productos.index', $request);
     }
 
     /**
@@ -55,9 +78,11 @@ class ProductoController extends Controller
      * @param  \App\Models\producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function edit(producto $producto)
+    public function edit($id)
     {
-        return view('productos.edit');
+        $rubros = rubro::all();
+        $producto=producto::findOrfail($id);
+        return view('productos.edit', compact('rubros', 'producto'));
     }
 
     /**
@@ -67,9 +92,25 @@ class ProductoController extends Controller
      * @param  \App\Models\producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, producto $producto)
+    public function update(Request $request, $id)
     {
-        //
+        $campos=[
+            'rubro_id'=> 'required',
+            'SKU'=> 'required',
+            'nombre'=> 'required|string|max:250',
+            'descripcion'=> 'required',
+            'precio'=> 'required',
+            'disponibilidad'=> 'required'
+        ];
+        /*if($request->hasFile('imagen')){
+            $campos+=['imagen'=> 'required|max:10000|mimes:jpeg,png,jpg'];
+        }*/
+        $mensaje=["required"=>'El :attribute es requerido'];
+        $this->validate($request,$campos,$mensaje);
+
+        $datosProductos=request()->except(['_token','_method']);
+        producto::where('id','=',$id)->update($datosProductos);
+        return redirect('productos');
     }
 
     /**
@@ -78,8 +119,9 @@ class ProductoController extends Controller
      * @param  \App\Models\producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(producto $producto)
+    public function destroy($id)
     {
-        //
+        producto::destroy($id);
+        return redirect('productos');
     }
 }

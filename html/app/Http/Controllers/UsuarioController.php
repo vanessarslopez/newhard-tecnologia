@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\rubro;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class RubroController extends Controller
+class UsuarioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +14,7 @@ class RubroController extends Controller
      */
     public function index()
     {
-        //$datos['rubro']=rubro::paginate(5); //['rubro'] indice de la variable datos
-        return view('productos/rubros.index');
-        //toda la info q recupero del modelo rubro,
-        //se pasa a la vista index mediante la variable $datos
+        //
     }
 
     /**
@@ -27,7 +24,7 @@ class RubroController extends Controller
      */
     public function create()
     {
-        return view('productos/rubros.create');
+        //
     }
 
     /**
@@ -38,19 +35,16 @@ class RubroController extends Controller
      */
     public function store(Request $request)
     {
-        //$datosRubros=request()->all(); esta linea hace q se almacene todo lo q trae la variable request.
-        $datosRubros=request()->except('_token');
-        rubro::insert($datosRubros); // rubro->hace referencia al modelo.
-        return response()->json($datosRubros); //retorna una respuesta json
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\rubro  $rubro
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(rubro $rubro)
+    public function show(User $user)
     {
         //
     }
@@ -58,10 +52,10 @@ class RubroController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\rubro  $rubro
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(rubro $rubro)
+    public function edit(User $user)
     {
         //
     }
@@ -70,10 +64,10 @@ class RubroController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\rubro  $rubro
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, rubro $rubro)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -81,10 +75,10 @@ class RubroController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\rubro  $rubro
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(rubro $rubro)
+    public function destroy(User $user)
     {
         //
     }

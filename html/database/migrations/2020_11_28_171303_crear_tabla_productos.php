@@ -21,7 +21,7 @@ class CrearTablaProductos extends Migration
             $table->text('descripcion');
             $table->text('imagen');
             $table->decimal('precio', 8, 2);
-            $table->integer('disponiblididad');
+            $table->integer('disponibilidad');
             $table->timestamps();
         });
     }

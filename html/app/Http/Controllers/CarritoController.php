@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\carrito;
+use App\Models\producto;
 use Illuminate\Http\Request;
 
 class CarritoController extends Controller
@@ -14,8 +15,17 @@ class CarritoController extends Controller
      */
     public function index()
     {
-        //
+        $datos['carrito']=carrito::all();
+        //$producto=producto::find($id->id);
+        return view('carritos.index', $datos);
+        //return view('carritos.index', compact('producto'));
+        //return back()->with('success',"$producto->nombre se agrego al carrito");
     }
+
+   /* public function add(Request $request)
+    {
+
+    }*
 
     /**
      * Show the form for creating a new resource.
@@ -35,7 +45,14 @@ class CarritoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $datosProductos=request()->except('_token');
+        //session([
+          //  'key' => $datosProductos
+            //]);
+        //return back()->with('success',"$producto->nombre se agrego al carrito");
+        //$value = $request->session()->get('key');
+        //$request->session()->put('key', 'value');
+        return response()->json($request);
     }
 
     /**
@@ -46,7 +63,7 @@ class CarritoController extends Controller
      */
     public function show(carrito $carrito)
     {
-        //
+
     }
 
     /**
