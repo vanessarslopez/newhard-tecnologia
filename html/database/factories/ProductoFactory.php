@@ -22,13 +22,13 @@ class ProductoFactory extends Factory
     public function definition()
     {
         return [
-            //'rubro_id' => $this->faker->rubro_id,
-            //'SKU' => $this->faker->SKU->unique(),
+            'rubro_id' => 10,
+            //'SKU' => $this->faker->random_int->unique(),
             'nombre' => $this->faker->name,
             'descripcion' => $this->faker->text,
             'imagen' => $this->faker->image,
-            //'precio' => $this->faker->number,
-           // 'disponibilidad' => $this->faker->number,
+            //'precio' => $this->faker->randomFloat(),
+            'disponibilidad' => 10,
         ];
     }
 }
