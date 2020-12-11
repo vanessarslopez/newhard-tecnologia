@@ -23,11 +23,11 @@ class ProductoFactory extends Factory
     {
         return [
             'rubro_id' => 10,
-            //'SKU' => $this->faker->random_int->unique(),
+            'SKU' => $this->faker->randomNumber($nbDigits = NULL, $strict = false),
             'nombre' => $this->faker->name,
             'descripcion' => $this->faker->text,
             'imagen' => $this->faker->image,
-            //'precio' => $this->faker->randomFloat(),
+            'precio' => $this->faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 9999),
             'disponibilidad' => 10,
         ];
     }
