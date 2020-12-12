@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\producto;
 use App\Models\rubro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\carrito;
 
 class ProductoController extends Controller
 {
@@ -16,7 +18,7 @@ class ProductoController extends Controller
     public function index()
     {
         //$datos['productos']=producto::all();
-        $datos['productos']=producto::paginate(4);
+        $datos['productos']=producto::paginate(8);
         return view('productos.index', $datos);
     }
 
@@ -123,5 +125,29 @@ class ProductoController extends Controller
     {
         producto::destroy($id);
         return redirect('productos');
+    }
+
+    //CARRITO
+    function addToCart($id)
+    {
+        $user = Auth::user();
+        $producto = Producto::findOrFail($id);
+
+        $cart = carrito::firstOrCreate(
+            ['user_id' => $user->id, 'isOpen' => true]
+        );
+
+        $cart->products()->attach($producto->id);
+        //$producto->carts()->attach($cart->id);
+
+        return $cart;
+    }
+    function getCart()
+    {
+        $user = Auth::user();
+        $cart = carrito::where('user_id', $user->id)
+            ->where('isOpen', true)->firstOrFail();
+
+        return dd($cart->products);
     }
 }

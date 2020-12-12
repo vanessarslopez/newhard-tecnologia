@@ -42,7 +42,7 @@
                     <ul class="navbar-nav ml-auto">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="#">{{ __('Carrito(0)') }}</a>
+                                <a class="nav-link" href="{{ route('carritosDetalle.index') }}">{{ __('Carrito(0)') }}</a>
                             </li>
                         </ul>
                         <!-- Authentication Links -->

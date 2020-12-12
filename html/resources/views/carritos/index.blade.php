@@ -1,31 +1,58 @@
-<?php
-sessionStr::start($id, 'carrito')
-//return response()->json($_POST);
+@extends('layouts.app')
 
-//session_start();
-//session:array();
+@section('content')
+{{ $importeTotal=0 }}
 
-$mensaje='';
 
-if (!isset($_SESSION['carrito'])) {
-    $producto=array(
-        'id' => $id,
-        'nombre' => $nombre,
-        'cantidad' => $cantidad,
-        'precio' => $precio,
-    );
-    $_SESSION['carrito'][0]=$producto;
-} else {
-    $numeroProductos=count($_SESSION['carrito']);
-    $producto=array(
-        'id' => $id,
-        'nombre' => $nombre,
-        'cantidad' => $cantidad,
-        'precio' => $precio,
-    );
-    $_SESSION['carrito'][$numeroProductos]=$producto;
-}
-echo $mensaje=print_r($_SESSION,true);
-echo $mensaje;
+<div class="container">
+    <h2>Lista de Productos</h1>
+</div>
 
-echo "prueba";
+<div class="container">
+    <table class="table table-light table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>#</th>
+                <th>imagen</th>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+    <tbody>
+    @forelse ($productos as $producto)
+        {{ $importeTotal = $importeTotal+ $producto->precio * $producto->cantidad }}
+    <tr>
+        <td>{{$loop->iteration}}</td>
+        <td>
+            <img src="{{ asset('storage/uploads').'/'.$producto->imagen}}" alt="" class="img-thumbnail img-fluid" width="100">
+        </td>
+        <td>{{$producto->nombre}}</td>
+        <td>{{$producto->cantidad}}</td>
+        <td>{{$producto->precio}}</td>
+        <td>
+            <a class="btn btn-success" href="#">
+                +
+                </a>
+                <a class="btn btn-warning" href="#">
+                    -
+                    </a>
+            <form method="post" action="{{ url('/productos/'.$producto->id) }}" style="display:inline">
+                {{ @csrf_field() }}
+                {{ @method_field('DELETE') }} <!-- esta linea borra el registro -->
+                <button class="btn btn-danger" type="submit" onclick="return confirm('¿Borrar?');">X</button>
+            </form>
+        </td>
+    </tr>
+    @empty
+
+    @endforelse
+    </tbody>
+    </table>
+    <div>Total: {{ $importeTotal}}
+
+    </div>
+</div>
+
+@endsection

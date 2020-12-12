@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class producto extends Model
 {
     use HasFactory;
+
+    public function carts()
+    {
+        return $this->belongsToMany('App\Models\carrito')->withTimestamps();
+    }
 }

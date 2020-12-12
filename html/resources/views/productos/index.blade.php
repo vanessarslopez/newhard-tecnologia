@@ -13,7 +13,7 @@
         <div class="row">
             @foreach ($productos as $producto)
                 <div class="col-3">
-                    <div class="card"> <!-- este div representa 1 producto -->
+                    <div class="card" style="height: 600px; margin:5px;"> <!-- este div representa 1 producto -->
                         <img
                             title="Titulo producto"
                             alt="Titulo"
@@ -29,17 +29,15 @@
                             <p class="card-text">Disponibles: {{$producto->disponibilidad}}</p>
                             @endif
                             <p class="card-text">{{$producto->descripcion}}</p>
-
                             <form action="{{ url('/carritos')}}" method="POST">
                                 {{ @csrf_field() }}
                                 <input type="hidden" name="id" id="id" value="{{$producto->id}}">
                                 <input type="hidden" name="nombre" id="nombre" value="{{$producto->nombre}}">
                                 <input type="hidden" name="precio" id="precio" value="{{$producto->precio}}">
                                 <input type="hidden" name="cantidad" id="cantidad" value="1">
-                                <input class="btn btn-success align-content-center" type="submit" value="Agregar al carrito">
-
-
+                                <input class="btn btn-success align-content-center" type="submit" value="Agregar ">
                             </form>
+                            <a href="{{ url('carrito-addCart/'.$producto->id)}}" class="btn btn-success">Agregar al carrito</a>
                         </div>
                     </div>
                 </div>

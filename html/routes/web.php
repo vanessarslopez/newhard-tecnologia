@@ -19,6 +19,10 @@ Route::get('/', function () {
     //return view('auth.login');
 });
 
+//CARRITO
+//Route::get('/cart', [ProductoController::class, 'getCart'])->name('product.shoppingCart');
+//Route::get('add-to-cart/{id}', [ProductoController::class, 'addToCart']);
+Route::get('carrito-addCart/{id}', 'CarritoDetalleController@addCart')->name('carrito-addCart');
 # CRUD Usuarios
 //Route::resource('usuarios','UsuarioController');
 
@@ -29,8 +33,8 @@ Route::resource('productos','ProductoController');
 # CRUD rubros
 Route::resource('productos/rubros','RubroController');
 
-# CRUD carrito
-Route::resource('carritos','CarritoController');
+# CRUD carrito detalle
+Route::resource('carritosDetalle','CarritoDetalleController');
 //Route::post('carritos', 'CarritoController@add')->name('cart.add');
 
 
