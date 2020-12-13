@@ -40,7 +40,6 @@ class CarritoDetalleController extends Controller
         $producto = producto::findOrFail($id);
         $user = Auth::user();
         $carritoUsuario = carrito::where('usuario_id', $user->id)->where('estado', 'A')->first();
-        //$carritoUsuario = carrito::findOrFail($id, 'carrito->estad'=='A');
 
 
         if($carritoUsuario == null){
@@ -56,6 +55,7 @@ class CarritoDetalleController extends Controller
 
         }
         //dd($carritoUsuario);
+
 
         $productoCarrito = carrito_detalle::where('carrito_id', $carritoUsuario->id)
                                          ->where('producto_id', $id)
@@ -106,14 +106,11 @@ class CarritoDetalleController extends Controller
     {
 
         $carrito = carrito::findOrFail($id);
-        $carritoDetalle = carrito_detalle::where('carrito_id', $id);
-
+        $carritoDetalle = carrito_detalle::where('carrito_id', $id)->get();
+        //return response()->json($carritoDetalle);
         $carrito->estado = "C";
         $carrito->precio = request()->precio;
-        //carrito::where ('id','=',$id) ->update($carrito);
-        //$datosProductos->cantidad +=request()->cantidad;
         $carrito->save();
-        //$user = Auth::user();
         foreach ($carritoDetalle as $detalle) {
             $this->actualizarStock($detalle->producto_id, $detalle->cantidad);
         }

@@ -1,8 +1,3 @@
-@extends('layouts.app')
-@section('title')
-    Carrito de Compras
-@endsection
-@section('content')
 <?php
 use App\Models\carrito_detalle;
 use App\Models\producto;
@@ -10,6 +5,12 @@ $detalleP = carrito_detalle::all();
 $listadoPorductos = producto::all();
 $precioTotal= 0;
 ?>
+@extends('layouts.app')
+@section('title')
+    Carrito de Compras
+@endsection
+@section('content')
+
 <div class="container">
     <h2>Carrito de compra</h1>
         <table class="table table-light">
@@ -74,14 +75,11 @@ $precioTotal= 0;
                         <form method="GET" action="{{ url('confirmarcompra/'.$producto->id) }}" style="display:inline">
                             {{ @csrf_field() }}
                             {{ @method_field('GET')}} <!-- esta linea modifica un producto al detalle de compra -->
-                            <input type="text" name="precio" id="precio" value="{{$precioTotal}}">
+                            <input type="hidden" name="precio" id="precio" value="{{$precioTotal}}">
                             <button class="btn btn-success" type="submit">
                                 Confirmar compra
                             </button>
                         </form>
-                        <a class="btn btn-success" href="{{ url('confirmarcompra/'.$producto->id.$precioTotal)}}">
-                            Confirmar Compra
-                        </a>
                     </th>
                 </tr>
         </thead>

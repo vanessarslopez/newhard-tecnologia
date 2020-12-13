@@ -5,11 +5,6 @@
 @section('content')
 
 <div class="container">
-    <p>
-        <!--<div class="alert alert-success" role="alert">
-            Pantalla de mensaje...
-        </div>-->
-        </p>
         <div class="row">
             @foreach ($productos as $producto)
                 <div class="col-3">
@@ -29,7 +24,9 @@
                             <p class="card-text">Disponibles: {{$producto->disponibilidad}}</p>
                             @endif
                             <p class="card-text">{{$producto->descripcion}}</p>
-                            <a href="{{ url('carrito-addCart/'.$producto->id)}}" class="btn btn-success btn-sm">Agregar al carrito</a>
+                            <a href="{{ url('carrito-addCart/'.$producto->id)}}" class="btn btn-success btn-sm">
+                                Agregar al carrito
+                            </a>
                         </div>
                     </div>
                 </div>
