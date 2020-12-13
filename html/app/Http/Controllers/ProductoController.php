@@ -94,7 +94,7 @@ class ProductoController extends Controller
      * @param  \App\Models\producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(request $request, $id)
     {
         $campos=[
             'rubro_id'=> 'required',

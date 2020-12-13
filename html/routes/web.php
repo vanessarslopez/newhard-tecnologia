@@ -23,6 +23,7 @@ Route::get('/', function () {
 //Route::get('/cart', [ProductoController::class, 'getCart'])->name('product.shoppingCart');
 //Route::get('add-to-cart/{id}', [ProductoController::class, 'addToCart']);
 Route::get('carrito-addCart/{id}', 'CarritoDetalleController@addCart')->name('carrito-addCart');
+Route::get('confirmarcompra/{id}', 'CarritoDetalleController@confirmarCompra')->name('confirmarCompra');
 # CRUD Usuarios
 //Route::resource('usuarios','UsuarioController');
 

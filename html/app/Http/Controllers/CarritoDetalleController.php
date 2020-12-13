@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\carrito_detalle;
-use App\Models\Producto;
-use App\Models\Carrito;
+use App\Models\producto;
+use App\Models\carrito;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,16 +17,14 @@ class CarritoDetalleController extends Controller
      */
     public function index()
     {
-        //
-        $datos['productos'] = carrito_detalle::leftJoin('productos', 'productos.id', '=', 'carritoDetalles.producto_id')
-                                            ->paginate(0);
-
-        //->select('CarritosDetalle.*', 'Productos.nombre as producto')
-        //Producto::paginate(5);
-
-        //dd($datos);
-
-       return view('carritos.index', $datos);
+        $user = Auth::user();
+        $datos['productos'] = carrito::where('usuario_id', $user->id)->where('estado', 'A')->get();
+        if($datos == null){
+            return back();
+        }
+        else{
+            return view('carritos.index', $datos);
+        }
     }
 
     /**
@@ -45,6 +43,8 @@ class CarritoDetalleController extends Controller
         $producto = producto::findOrFail($id);
         $user = Auth::user();
         $carritoUsuario = carrito::where('usuario_id', $user->id)->where('estado', 'A')->first();
+        //$carritoUsuario = carrito::findOrFail($id, 'carrito->estad'=='A');
+
 
         if($carritoUsuario == null){
             $carrito = [
@@ -58,6 +58,7 @@ class CarritoDetalleController extends Controller
             $carritoUsuario = Carrito::where('usuario_id', $user->id)->where('estado', 'A')->first();
 
         }
+        //dd($carritoUsuario);
 
         $productoCarrito = carrito_detalle::where('carrito_id', $carritoUsuario->id)
                                          ->where('producto_id', $id)
@@ -89,6 +90,7 @@ class CarritoDetalleController extends Controller
         }
 
         return back()->with('success',"$producto->nombre ¡se ha agregado con éxito al carrito!");
+
     }
 
     /**
@@ -100,9 +102,35 @@ class CarritoDetalleController extends Controller
     public function store(Request $request)
     {
         //
+    }
 
+    ## COMFIRMAR COMPRA
+    public function confirmarCompra($id)
+    {
 
+        $carrito = carrito::findOrFail($id);
+        $carritoDetalle = carrito_detalle::where('carrito_id', $id);
 
+        $carrito->estado = "C";
+        //carrito::where ('id','=',$id) ->update($carrito);
+        $carrito->save();
+        //$user = Auth::user();
+        foreach ($carritoDetalle as $detalle) {
+            $this->actualizarStock($detalle->producto_id, $detalle->cantidad);
+        }
+        $datos['productos']=producto::paginate(8);
+        return view('productos.index', $datos);
+        //dd($id);
+    }
+
+    public function actualizarStock($id, $cantidad){
+        $query = producto::findOrFail($id);
+        $stockActual = $query->disponibilidad;
+        $stockActual -=$cantidad;
+        $query->disponibilidad= $stockActual;
+        //llamar update de productocontroller.
+        $query->save();
+        //producto::where('id','=',$id)->update($query);
     }
 
 

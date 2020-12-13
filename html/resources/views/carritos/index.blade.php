@@ -1,58 +1,69 @@
 @extends('layouts.app')
-
+@section('title')
+    Carrito de Compras
+@endsection
 @section('content')
-{{ $importeTotal=0 }}
+<?php
+use App\Models\carrito_detalle;
+//$importeTotal=0;
+$detalleP = carrito_detalle::all();
 
-
+?>
 <div class="container">
-    <h2>Lista de Productos</h1>
-</div>
-
-<div class="container">
-    <table class="table table-light table-hover">
-        <thead class="thead-light">
-            <tr>
-                <th>#</th>
-                <th>imagen</th>
-                <th>Nombre</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Acciones</th>
-            </tr>
+    <h2>Carrito de compra</h1>
+        <table class="table table-light">
+            <thead class="thead-light">
+                @forelse ($productos as $producto)
+                    <tr>
+                        <th>Precio Total</th>
+                        <th>$ {{$producto->precio}}</th>
+                        <th>
+                            <a class="btn btn-success" href="{{ url('confirmarcompra/'.$producto->carrito_id)}}">
+                                Confirmar compra
+                            </a>
+                        </th>
+                    </tr>
+                    @empty
+                @endforelse
+            </thead>
+        </table>
+    <table class="table table-hover">
+        <thead>
+            <th>#</th>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Precio Neto</th>
+            <th>Acciones</th>
         </thead>
-    <tbody>
-    @forelse ($productos as $producto)
-        {{ $importeTotal = $importeTotal+ $producto->precio * $producto->cantidad }}
-    <tr>
-        <td>{{$loop->iteration}}</td>
-        <td>
-            <img src="{{ asset('storage/uploads').'/'.$producto->imagen}}" alt="" class="img-thumbnail img-fluid" width="100">
-        </td>
-        <td>{{$producto->nombre}}</td>
-        <td>{{$producto->cantidad}}</td>
-        <td>{{$producto->precio}}</td>
-        <td>
-            <a class="btn btn-success" href="#">
-                +
-                </a>
-                <a class="btn btn-warning" href="#">
-                    -
-                    </a>
-            <form method="post" action="{{ url('/productos/'.$producto->id) }}" style="display:inline">
-                {{ @csrf_field() }}
-                {{ @method_field('DELETE') }} <!-- esta linea borra el registro -->
-                <button class="btn btn-danger" type="submit" onclick="return confirm('¿Borrar?');">X</button>
-            </form>
-        </td>
-    </tr>
-    @empty
+        <tbody>
+            @foreach ($detalleP as $detalle)
+            <tr>
+                @if (($detalle->carrito_id) == ($producto->id))
 
-    @endforelse
-    </tbody>
+                    <td>{{$loop->iteration}}</td>
+                    <td></td>
+                    <td>{{$detalle->producto_id}}</td>
+                    <td>{{$detalle->cantidad}}</td>
+                    <td>$ {{$detalle->precio}}</td>
+                    <td>$ {{$detalle->precio*$detalle->cantidad}}</td>
+                    <td>
+                        <a class="btn btn-success" href="{{ url('/productos/'.$producto->id.'/edit') }}">
+                        +
+                        </a>
+                        <a class="btn btn-warning" href="{{ url('/productos/'.$producto->id.'/edit') }}">
+                            -
+                        </a>
+                        <a class="btn btn-danger" href="{{ url('/productos/'.$producto->id.'/edit') }}">
+                            x
+                         </a>
+                    </td>
+                @endif
+            </tr>
+        @endforeach
+        </tbody>
     </table>
-    <div>Total: {{ $importeTotal}}
-
-    </div>
 </div>
 
 @endsection
