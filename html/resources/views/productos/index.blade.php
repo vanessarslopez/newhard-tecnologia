@@ -1,3 +1,6 @@
+<?php
+use App\Models\carrito_detalle;
+?>
 @extends('layouts.app')
 @section('title')
     Listado de Productos
@@ -22,17 +25,23 @@
                             <p class="card-text font-weight-bold">Sin Stock</p>
                             @else
                             <p class="card-text">Disponibles: {{$producto->disponibilidad}}</p>
-                            @endif
                             <p class="card-text">{{$producto->descripcion}}</p>
-                            <a href="{{ url('carrito-addCart/'.$producto->id)}}" class="btn btn-success btn-sm">
+                            @endif
+                            @guest
+                            <a class="btn btn-success btn-sm disabled" title="Ingrese con su usuario">
                                 Agregar al carrito
                             </a>
+                            @else
+                                <a href="{{ url('carrito-addCart/'.$producto->id)}}" class="btn btn-success btn-sm">
+                                    Agregar al carrito
+                                </a>
+                            @endguest
                         </div>
                     </div>
                 </div>
                 @endforeach
-        </div>
+        </div>{{ $productos->links() }}
     </div>
-        {{ $productos->links() }}
+
 </div>
 @endsection

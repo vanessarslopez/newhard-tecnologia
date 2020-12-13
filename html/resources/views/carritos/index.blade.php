@@ -2,7 +2,7 @@
 use App\Models\carrito_detalle;
 use App\Models\producto;
 $detalleP = carrito_detalle::all();
-$listadoPorductos = producto::all();
+$listadoProductos = producto::all();
 $precioTotal= 0;
 ?>
 @extends('layouts.app')
@@ -12,7 +12,7 @@ $precioTotal= 0;
 @section('content')
 
 <div class="container">
-    <h2>Carrito de compra</h1>
+    <h2>Carrito de Compras</h1>
         <table class="table table-light">
             <thead class="thead-light">
                 @forelse ($productos as $producto)
