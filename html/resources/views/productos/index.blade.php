@@ -21,7 +21,7 @@
                             src="{{ asset('storage/uploads').'/'.$producto->imagen}}"
                             >
                         <div class="card-body">
-                            <span>{{$producto->nombre}}</span>
+                            <span>#{{$producto->id}} - {{$producto->nombre}}</span>
                             <h5 class="card-title">{{$producto->precio}}</h5>
                             @if ($producto->cantidad===0)
                             <p class="card-text font-weight-bold">Sin Stock</p>

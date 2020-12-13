@@ -5,31 +5,22 @@
 @section('content')
 <?php
 use App\Models\carrito_detalle;
-//$importeTotal=0;
+use App\Models\producto;
 $detalleP = carrito_detalle::all();
-
+$listadoPorductos = producto::all();
+$precioTotal= 0;
 ?>
 <div class="container">
     <h2>Carrito de compra</h1>
         <table class="table table-light">
             <thead class="thead-light">
                 @forelse ($productos as $producto)
-                    <tr>
-                        <th>Precio Total</th>
-                        <th>$ {{$producto->precio}}</th>
-                        <th>
-                            <a class="btn btn-success" href="{{ url('confirmarcompra/'.$producto->carrito_id)}}">
-                                Confirmar compra
-                            </a>
-                        </th>
-                    </tr>
                     @empty
                 @endforelse
             </thead>
         </table>
     <table class="table table-hover">
         <thead>
-            <th>#</th>
             <th>Imagen</th>
             <th>Nombre</th>
             <th>Cantidad</th>
@@ -41,29 +32,59 @@ $detalleP = carrito_detalle::all();
             @foreach ($detalleP as $detalle)
             <tr>
                 @if (($detalle->carrito_id) == ($producto->id))
+                     <?php
+                     //$precioNeto = $precioNeto + $detalle->precio*$detalle->cantidad
+                     $precioTotal = $precioTotal + $detalle->precio * $detalle->cantidad ?>
 
-                    <td>{{$loop->iteration}}</td>
-                    <td></td>
+                    <td>img</td>
                     <td>{{$detalle->producto_id}}</td>
                     <td>{{$detalle->cantidad}}</td>
                     <td>$ {{$detalle->precio}}</td>
                     <td>$ {{$detalle->precio*$detalle->cantidad}}</td>
                     <td>
-                        <a class="btn btn-success" href="{{ url('/productos/'.$producto->id.'/edit') }}">
-                        +
-                        </a>
-                        <a class="btn btn-warning" href="{{ url('/productos/'.$producto->id.'/edit') }}">
-                            -
-                        </a>
-                        <a class="btn btn-danger" href="{{ url('/productos/'.$producto->id.'/edit') }}">
-                            x
-                         </a>
+                        <form method="post" action="{{ url('/carritosDetalle/'.$detalle->id) }}" style="display:inline">
+                            {{ @csrf_field() }}
+                            {{ @method_field('PATCH')}} <!-- esta linea modifica un producto al detalle de compra -->
+                            <input type="hidden" name="cantidad" id="cantidad" value="1">
+                            <button class="btn btn-success" type="submit">+</button>
+                        </form>
+                        <form method="post" action="{{ url('/carritosDetalle/'.$detalle->id) }}" style="display:inline">
+                            {{ @csrf_field() }}
+                            {{ @method_field('PATCH')}} <!-- esta linea modifica un producto al detalle de compra -->
+                            <input type="hidden" name="cantidad" id="cantidad" value="-1">
+                            <button class="btn btn-warning" type="submit">-</button>
+                        </form>
+                        <form method="post" action="{{ url('/carritosDetalle/'.$detalle->id) }}" style="display:inline">
+                            {{ @csrf_field() }}
+                            {{ @method_field('DELETE') }} <!-- esta linea borra el registro -->
+                            <button class="btn btn-danger" type="submit" onclick="return confirm('¿Borrar?');">X</button>
+                        </form>
                     </td>
                 @endif
             </tr>
         @endforeach
         </tbody>
     </table>
+    <table class="table table-light">
+        <thead class="thead-light">
+                <tr>
+                    <th>Precio Total</th>
+                    <th>$ {{$precioTotal}}</th>
+                    <th>
+                        <form method="GET" action="{{ url('confirmarcompra/'.$producto->id) }}" style="display:inline">
+                            {{ @csrf_field() }}
+                            {{ @method_field('GET')}} <!-- esta linea modifica un producto al detalle de compra -->
+                            <input type="text" name="precio" id="precio" value="{{$precioTotal}}">
+                            <button class="btn btn-success" type="submit">
+                                Confirmar compra
+                            </button>
+                        </form>
+                        <a class="btn btn-success" href="{{ url('confirmarcompra/'.$producto->id.$precioTotal)}}">
+                            Confirmar Compra
+                        </a>
+                    </th>
+                </tr>
+        </thead>
+    </table>
 </div>
-
 @endsection

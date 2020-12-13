@@ -19,12 +19,9 @@ class CarritoDetalleController extends Controller
     {
         $user = Auth::user();
         $datos['productos'] = carrito::where('usuario_id', $user->id)->where('estado', 'A')->get();
-        if($datos == null){
-            return back();
-        }
-        else{
-            return view('carritos.index', $datos);
-        }
+        return view('carritos.index', $datos);
+        //dd($datos);
+        //return response()->json($datos);
     }
 
     /**
@@ -105,14 +102,16 @@ class CarritoDetalleController extends Controller
     }
 
     ## COMFIRMAR COMPRA
-    public function confirmarCompra($id)
+    public function confirmarCompra(Request $request, $id)
     {
 
         $carrito = carrito::findOrFail($id);
         $carritoDetalle = carrito_detalle::where('carrito_id', $id);
 
         $carrito->estado = "C";
+        $carrito->precio = request()->precio;
         //carrito::where ('id','=',$id) ->update($carrito);
+        //$datosProductos->cantidad +=request()->cantidad;
         $carrito->save();
         //$user = Auth::user();
         foreach ($carritoDetalle as $detalle) {
@@ -163,9 +162,12 @@ class CarritoDetalleController extends Controller
      * @param  \App\Models\CarritoDetalle  $carritoDetalle
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, carrito_detalle $carritoDetalle)
+    public function update(Request $request, $id)
     {
-        //
+        $datosProductos = carrito_detalle::findOrFail($id);
+        $datosProductos->cantidad +=request()->cantidad;
+        $datosProductos->save();
+        return redirect('carritosDetalle');
     }
 
     /**
@@ -174,8 +176,9 @@ class CarritoDetalleController extends Controller
      * @param  \App\Models\CarritoDetalle  $carritoDetalle
      * @return \Illuminate\Http\Response
      */
-    public function destroy(carrito_detalle $carritoDetalle)
+    public function destroy($id)
     {
-        //
+        carrito_detalle::destroy($id);
+        return redirect('carritosDetalle');
     }
 }

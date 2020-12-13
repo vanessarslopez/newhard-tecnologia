@@ -1,3 +1,16 @@
+<?php
+use App\Models\carrito;
+use App\Models\carrito_detalle;
+use Illuminate\Support\Facades\Auth;
+$user = Auth::user();
+$contador=0;
+$datos['productos'] = carrito::where('usuario_id', $user->id)->where('estado', 'A')->get();
+//return response()->json($datos);
+/*$idcarrito = $datos->id;*/
+//$detalleCarrito= carrito_detalle::where('carrito_id', $idcarrito)->get();
+//FALTA CON EL ID DEL CARRITO BUSCAR EN CARRITO_DETALLE LA CANTIDAD DE PRODUCTOS Q EXISTEN.
+$contador = $datos['productos'] ->count();
+?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -37,12 +50,16 @@
                             <a class="nav-link" href="{{ route('productos.index') }}">{{ __('Listado de Productos') }}</a>
                         </li>
                     </ul>
-
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="carritosDetalle">{{ __('Carrito(0)') }}</a>
+                                @if ($contador==0)
+                                    <a class="nav-link">{{ __('Carrito(Sin Productos)') }}</a>
+                                @else
+                                    <a class="nav-link" href="carritosDetalle">Carrito Activo({{  $contador}}) </a>
+                                @endif
+
                             </li>
                         </ul>
                         <!-- Authentication Links -->
