@@ -44,7 +44,7 @@ use Illuminate\Support\Facades\Auth;
                                     if (!$datos == null) {
                                         $detalleCarrito= carrito_detalle::where('carrito_id', $datos->id)
                                                                         ->where('producto_id', $producto->id)->first();
-                                    }
+                                    //}
                                     ?>
                                     @if ($detalleCarrito == null)
                                         <a href="{{ url('carrito-addCart/'.$producto->id)}}" class="btn btn-success btn-sm">
@@ -55,6 +55,16 @@ use Illuminate\Support\Facades\Auth;
                                             Producto agregado
                                         </a>
                                     @endif
+                                    <?php
+                                    }
+                                    else {
+                                        ?>
+                                        <a href="{{ url('carrito-addCart/'.$producto->id)}}" class="btn btn-success btn-sm">
+                                            Agregar al carrito
+                                        </a>
+                                    <?php
+                                        }
+                                    ?>
                                 @endif
                                 <!--<a class="btn btn-warning" href="{{ url('/productos/'.$producto->id.'/edit') }}">
                                     Editar
