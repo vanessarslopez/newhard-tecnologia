@@ -76,6 +76,5 @@ use Illuminate\Support\Facades\Auth;
                 @endforeach
         </div>{{ $productos->links() }}
     </div>
-
 </div>
 @endsection
