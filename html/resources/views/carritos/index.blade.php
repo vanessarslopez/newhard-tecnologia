@@ -2,7 +2,7 @@
 use App\Models\carrito_detalle;
 use App\Models\producto;
 $detalleP = carrito_detalle::all();
-$listadoProductos = producto::all();
+//$listadoProductos = producto::all();
 $precioTotal= 0;
 ?>
 @extends('layouts.app')
@@ -31,30 +31,53 @@ $precioTotal= 0;
         </thead>
         <tbody>
             @foreach ($detalleP as $detalle)
+            <?php
+                $listadoProductos = producto::where('id',$detalle->producto_id)->first();
+            ?>
             <tr>
                 @if (($detalle->carrito_id) == ($producto->id))
                      <?php
-                     //$precioNeto = $precioNeto + $detalle->precio*$detalle->cantidad
-                     $precioTotal = $precioTotal + $detalle->precio * $detalle->cantidad ?>
-
-                    <td>img</td>
-                    <td>{{$detalle->producto_id}}</td>
+                        $precioTotal = $precioTotal + $detalle->precio*$detalle->cantidad;
+                     ?>
+                    <td>
+                        <img src="{{ asset('storage/uploads').'/'.$listadoProductos->imagen}}" alt="" class="img-thumbnail img-fluid" width="100">
+                    </td>
+                    <td>{{$listadoProductos->nombre}}</td>
                     <td>{{$detalle->cantidad}}</td>
                     <td>$ {{$detalle->precio}}</td>
                     <td>$ {{$detalle->precio*$detalle->cantidad}}</td>
                     <td>
-                        <form method="post" action="{{ url('/carritosDetalle/'.$detalle->id) }}" style="display:inline">
-                            {{ @csrf_field() }}
-                            {{ @method_field('PATCH')}} <!-- esta linea modifica un producto al detalle de compra -->
-                            <input type="hidden" name="cantidad" id="cantidad" value="1">
-                            <button class="btn btn-success" type="submit">+</button>
-                        </form>
-                        <form method="post" action="{{ url('/carritosDetalle/'.$detalle->id) }}" style="display:inline">
-                            {{ @csrf_field() }}
-                            {{ @method_field('PATCH')}} <!-- esta linea modifica un producto al detalle de compra -->
-                            <input type="hidden" name="cantidad" id="cantidad" value="-1">
-                            <button class="btn btn-warning" type="submit">-</button>
-                        </form>
+                        @if ($listadoProductos->disponibilidad > $detalle->cantidad)
+                            <form method="post" action="{{ url('/carritosDetalle/'.$detalle->id) }}" style="display:inline">
+                                {{ @csrf_field() }}
+                                {{ @method_field('PATCH')}} <!-- esta linea modifica un producto al detalle de compra -->
+                                <input type="hidden" name="cantidad" id="cantidad" value="1">
+                                <button class="btn btn-success" type="submit">+</button>
+                            </form>
+                        @else
+                            <form method="post" action="{{ url('/carritosDetalle/'.$detalle->id) }}" style="display:inline">
+                                {{ @csrf_field() }}
+                                {{ @method_field('PATCH')}} <!-- esta linea modifica un producto al detalle de compra -->
+                                <input type="hidden" name="cantidad" id="cantidad" value="1">
+                                <button class="btn btn-success" type="submit" disabled>+</button>
+                            </form>
+                        @endif
+
+                        @if ($detalle->cantidad > 1 )
+                            <form method="post" action="{{ url('/carritosDetalle/'.$detalle->id) }}" style="display:inline">
+                                {{ @csrf_field() }}
+                                {{ @method_field('PATCH')}} <!-- esta linea modifica un producto al detalle de compra -->
+                                <input type="hidden" name="cantidad" id="cantidad" value="-1">
+                                <button class="btn btn-warning" type="submit">-</button>
+                            </form>
+                        @else
+                            <form method="post" action="{{ url('/carritosDetalle/'.$detalle->id) }}" style="display:inline">
+                                {{ @csrf_field() }}
+                                {{ @method_field('PATCH')}} <!-- esta linea modifica un producto al detalle de compra -->
+                                <input type="hidden" name="cantidad" id="cantidad" value="-1">
+                                <button class="btn btn-warning" type="submit" disabled>-</button>
+                            </form>
+                        @endif
                         <form method="post" action="{{ url('/carritosDetalle/'.$detalle->id) }}" style="display:inline">
                             {{ @csrf_field() }}
                             {{ @method_field('DELETE') }} <!-- esta linea borra el registro -->

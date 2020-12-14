@@ -2,14 +2,7 @@
 use App\Models\carrito;
 use App\Models\carrito_detalle;
 use Illuminate\Support\Facades\Auth;
-//$user = Auth::user();
-$contador=0;
-//$datos['productos'] = carrito::where('usuario_id', $user->id)->where('estado', 'A')->get();
-//return response()->json($datos);
-/*$idcarrito = $datos->id;*/
-//$detalleCarrito= carrito_detalle::where('carrito_id', $idcarrito)->get();
-//FALTA CON EL ID DEL CARRITO BUSCAR EN CARRITO_DETALLE LA CANTIDAD DE PRODUCTOS Q EXISTEN.
-//$contador = $datos['productos'] ->count();
+
 ?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -57,15 +50,22 @@ $contador=0;
                             <?php
                             $user = Auth::user();
                             $contador=0;
-                            $datos['productos'] = carrito::where('usuario_id', $user->id)->where('estado', 'A')->get();
-                            $contador = $datos['productos'] ->count();
+                            $datos = carrito::where('usuario_id', $user->id)->where('estado', 'A')->first();
+                            if (!$datos == null) {
+                                $detalleCarrito= carrito_detalle::where('carrito_id', $datos->id)->get();
+                                $contador = $detalleCarrito ->count();
+                            }
                             ?>
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
                                 @if ($contador==0)
-                                    <a class="nav-link">{{ __('Carrito(Sin Productos)') }}</a>
+                                    <a class="nav-link">
+                                        Carrito({{$contador}})
+                                    </a>
                                 @else
-                                    <a class="nav-link" href="carritosDetalle">Carrito Activo({{$contador}}) </a>
+                                    <a class="nav-link" href="carritosDetalle">
+                                        Carrito({{$contador}})
+                                    </a>
                                 @endif
 
                             </li>

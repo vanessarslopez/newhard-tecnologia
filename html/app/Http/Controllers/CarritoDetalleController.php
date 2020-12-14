@@ -21,7 +21,7 @@ class CarritoDetalleController extends Controller
         $datos['productos'] = carrito::where('usuario_id', $user->id)->where('estado', 'A')->get();
         return view('carritos.index', $datos);
         //dd($datos);
-        //return response()->json($datos);
+        //return response()->json($datos->id);
     }
 
     /**
@@ -104,7 +104,6 @@ class CarritoDetalleController extends Controller
     ## COMFIRMAR COMPRA
     public function confirmarCompra(Request $request, $id)
     {
-
         $carrito = carrito::findOrFail($id);
         $carritoDetalle = carrito_detalle::where('carrito_id', $id)->get();
         //return response()->json($carritoDetalle);
@@ -115,7 +114,7 @@ class CarritoDetalleController extends Controller
             $this->actualizarStock($detalle->producto_id, $detalle->cantidad);
         }
         $datos['productos']=producto::paginate(8);
-        return view('productos.index', $datos);
+        return view('usuarios.index', $datos);
         //dd($id);
     }
 

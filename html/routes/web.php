@@ -30,6 +30,7 @@ Route::get('confirmarcompra/{id}', 'CarritoDetalleController@confirmarCompra')->
 # CRUD productos
 #validar ingreso: ->middleware(auth())
 Route::resource('productos','ProductoController');
+Route::resource('administrador','ProductoController');
 
 # CRUD rubros
 Route::resource('productos/rubros','RubroController');

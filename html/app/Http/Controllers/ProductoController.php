@@ -127,27 +127,4 @@ class ProductoController extends Controller
         return redirect('productos');
     }
 
-    //CARRITO
-    function addToCart($id)
-    {
-        $user = Auth::user();
-        $producto = Producto::findOrFail($id);
-
-        $cart = carrito::firstOrCreate(
-            ['user_id' => $user->id, 'isOpen' => true]
-        );
-
-        $cart->products()->attach($producto->id);
-        //$producto->carts()->attach($cart->id);
-
-        return $cart;
-    }
-    function getCart()
-    {
-        $user = Auth::user();
-        $cart = carrito::where('user_id', $user->id)
-            ->where('isOpen', true)->firstOrFail();
-
-        return dd($cart->products);
-    }
 }

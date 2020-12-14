@@ -1,0 +1,12 @@
+	- ELIMINAR y AGREGAR CANTIDAD a cada producto del carrito:
+elimina y actualiza, pero no actualiza PRECIO en la tabla carrito
+(ese precio lo actualizo al confirmar la compra) CORREGIR **********
+
+	- PRODUCTOS INDEX
+FALTA validar q el producto se ingrese una sola vez al carrito.
+
+
+	- CONFIRMAR COMPRA
+al confirmar la compra, ingresa a la vista de COMPRA REALIZADA CON EXITO
+Aqui se deberia mostrar los datos del cliente, si ya estan en la bd o solicitarlos y los datos de envio.
+CORREGIR: en la url queda la direccion usada al confirmar la compra, ya q use variable GET. 
