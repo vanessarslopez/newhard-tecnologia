@@ -30,9 +30,7 @@ use Illuminate\Support\Facades\Auth;
                             @endif
                             <p class="card-text">{{$producto->descripcion}}</p>
                             @guest
-                            <a class="btn btn-success btn-sm disabled">
-                                Agregar al carrito
-                            </a>
+
                             @else
                                 @if ($producto->disponibilidad=='0')
                                     <a class="btn btn-success btn-sm disabled">
