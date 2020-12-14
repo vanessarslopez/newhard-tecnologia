@@ -52,7 +52,7 @@ use Illuminate\Support\Facades\Auth;
                                         </a>
                                     @else
                                         <a class="btn btn-warning btn-sm disabled">
-                                            Agregado al carrito
+                                            Producto agregado
                                         </a>
                                     @endif
                                 @endif
