@@ -1,6 +1,6 @@
-	- PRODUCTOS INDEX
-FALTA validar q el producto se ingrese una sola vez al carrito.
-
+	- PAGINACION
+CORREGIR el estilo.
+	
 	- CONFIRMAR COMPRA
 al confirmar la compra, ingresa a la vista de COMPRA REALIZADA CON EXITO
 Aqui se deberia mostrar los datos del cliente, si ya estan en la bd o solicitarlos y los datos de envio.

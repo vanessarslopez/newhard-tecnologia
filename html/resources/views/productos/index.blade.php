@@ -1,5 +1,7 @@
 <?php
+use App\Models\carrito;
 use App\Models\carrito_detalle;
+use Illuminate\Support\Facades\Auth;
 ?>
 @extends('layouts.app')
 @section('title')
@@ -28,19 +30,33 @@ use App\Models\carrito_detalle;
                             @endif
                             <p class="card-text">{{$producto->descripcion}}</p>
                             @guest
-                            <a class="btn btn-success btn-sm disabled" title="Ingrese con su usuario">
+                            <a class="btn btn-success btn-sm disabled">
                                 Agregar al carrito
                             </a>
                             @else
                                 @if ($producto->disponibilidad=='0')
-                                    <a class="btn btn-success btn-sm disabled" title="Ingrese con su usuario">
+                                    <a class="btn btn-success btn-sm disabled">
                                         Agregar al carrito
                                     </a>
                                 @else
-                                    <a href="{{ url('carrito-addCart/'.$producto->id)}}" class="btn btn-success btn-sm">
-                                        Agregar al carrito
-                                    </a>
-
+                                    <?php
+                                    $user = Auth::user();
+                                    $contador=0;
+                                    $datos = carrito::where('usuario_id', $user->id)->where('estado', 'A')->first();
+                                    if (!$datos == null) {
+                                        $detalleCarrito= carrito_detalle::where('carrito_id', $datos->id)
+                                                                        ->where('producto_id', $producto->id)->first();
+                                    }
+                                    ?>
+                                    @if ($detalleCarrito == null)
+                                        <a href="{{ url('carrito-addCart/'.$producto->id)}}" class="btn btn-success btn-sm">
+                                            Agregar al carrito
+                                        </a>
+                                    @else
+                                        <a class="btn btn-warning btn-sm disabled">
+                                            Agregado al carrito
+                                        </a>
+                                    @endif
                                 @endif
                                 <!--<a class="btn btn-warning" href="{{ url('/productos/'.$producto->id.'/edit') }}">
                                     Editar
